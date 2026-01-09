@@ -110,3 +110,32 @@ O projeto utiliza **Docker Compose** para orquestrar o banco de dados e a ferram
 | `docker-compose down` | **Desliga** e remove os containers/processos. |
 
 > **Nota:** O serviço `pgadmin` possui uma dependência (`depends_on`) do serviço `db`, garantindo que o banco de dados esteja pronto antes da interface subir.
+
+## 🌳 Estratégia de Branches (Git Flow)
+
+No desenvolvimento do **Mercado-App**, utilizo branches para separar as tarefas:
+
+- **main**: Código estável e pronto para rodar.
+- **feat/**: Novas funcionalidades (Ex: `feat/backend-produtos`).
+- **fix/**: Correção de bugs.
+- **docs/**: Melhorias na documentação.
+
+### 💻 Comandos Essenciais do Git:
+
+- `git checkout -b nome-da-branch`: Cria e entra em uma nova branch.
+- `git checkout nome-da-branch`: Alterna entre branches existentes.
+- `git status`: Verifica arquivos alterados e o estado do repositório.
+- `git add .`: Prepara todas as alterações para o commit.
+- `git commit -m "mensagem"`: Salva as alterações localmente com uma descrição.
+- `git reset --soft HEAD~1`: Desfaz o último commit mantendo as alterações nos arquivos (volta para o status M)
+- `git push origin nome-da-branch`: Envia os commits para o servidor remoto.
+- `git pull origin main`: Atualiza sua branch com as últimas mudanças da principal.
+- `git merge nome-da-branch`: Une as alterações de uma branch à sua branch atual.
+- `git stash`: "Esconde" alterações temporariamente para permitir a troca de branch sem commit.
+
+### ✅ Checklist antes de dar Merge na Main:
+
+1. O código compila sem erros?
+2. O endpoint de cadastro retorna `201 Created`?
+3. O `.gitignore` está ignorando a pasta `target`?
+4. As alterações foram testadas dentro do container Docker?
