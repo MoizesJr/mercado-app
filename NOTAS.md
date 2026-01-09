@@ -1,4 +1,4 @@
-# 📝 Anotações do Projeto - Sistema Mercado
+# 📝 Anotações do Projeto - MERCADO-APP
 
 ## 🅰️ Angular (Frontend)
 
