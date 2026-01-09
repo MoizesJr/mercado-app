@@ -86,6 +86,7 @@ O projeto utiliza **Docker Compose** para orquestrar o banco de dados e a ferram
 
 |     Serviço    |        Imagem      | Porta Local | Descrição |
 
+| **mercado-api** | `mercado-app-backend` | `8080` | Container da aplicação Spring Boot. |
 | **mercado-db** | `postgres:15-alpine` | `5432` | Banco de dados PostgreSQL (versão leve). |
 | **mercado-pgadmin** | `dpage/pgadmin4` | `5050` | Interface web para gerenciar tabelas e dados. |
 
@@ -103,11 +104,14 @@ O projeto utiliza **Docker Compose** para orquestrar o banco de dados e a ferram
 
 ### 🚀 Comandos Rápidos
 
-|              Comando   |    Ação                                      |
+|              Comando           |    Ação                                                |
 
-| `docker-compose up -d` | **Liga** todos os serviços em segundo plano. |
-| `docker-compose ps` | **Lista** os containers e verifica se estão rodando. |
-| `docker-compose down` | **Desliga** e remove os containers/processos. |
+| `docker-compose up -d --build` | **Roda** tudo em segundo plano (libera o terminal).    |
+| `docker-compose up -d`         | **Liga** todos os serviços em segundo plano.           |
+| `docker-compose ps`            | **Lista** os containers e verifica se estão rodando.   |
+| `docker-compose down`          | **Desliga** e remove os containers/processos.          |
+| `docker-compose stop`          | **Para** os containers em segundo plano sem apagá-los. |
+| `docker-compose restart`       | **Reinicia** os containers.                            |
 
 > **Nota:** O serviço `pgadmin` possui uma dependência (`depends_on`) do serviço `db`, garantindo que o banco de dados esteja pronto antes da interface subir.
 
@@ -139,3 +143,27 @@ No desenvolvimento do **Mercado-App**, utilizo branches para separar as tarefas:
 2. O endpoint de cadastro retorna `201 Created`?
 3. O `.gitignore` está ignorando a pasta `target`?
 4. As alterações foram testadas dentro do container Docker?
+
+## 🧪 Testes de API (Postman)
+
+O projeto **Mercado-App** utiliza validações rigorosas via DTO para garantir que nenhum dado incompleto chegue ao banco de dados.
+
+### 🚀 Como realizar o cadastro de produtos:
+
+**Configuração da Requisição:**
+- Método: `POST`
+- URL: `http://localhost:8080/produtos`
+- Segurança: Desativada no código (exclude Security), portanto use No Auth no Postman.
+- Corpo (Body): Use o formato `raw` -> `JSON`.
+
+### 🆘 Guia de Debug (Erro 400):
+
+- **Missing Fields:** Se esquecer o campo `quantidadeEstoque`, a API retornará `400 Bad Request` devido à anotação `@NotNull`.
+- **Validação de Valores:** O campo `precoVenda` não aceita valores `negativos` (@PositiveOrZero).
+- **Nomes de Campos:** O JSON diferencia maiúsculas de minúsculas. Use sempre exatamente como definido no `ProdutoDTO`.
+
+### ✅ Checklist de Sucesso:
+
+[ ] O Postman retornou status 201 Created.
+[ ] O banco de dados atribuiu um id ao novo produto.
+[ ] O console do Docker mostrou o SQL de INSERT sendo executado.
