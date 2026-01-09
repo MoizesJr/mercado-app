@@ -77,6 +77,9 @@
 - `ddl-auto=update`: O Hibernate cria/atualiza as tabelas automaticamente baseado nas classes Java.
 - `show-sql=true`: Permite ver no console os comandos SQL que o Spring está executando.
 
+#### **6. Configuração Dinâmica de Ambiente:**
+- O arquivo `application.properties` utiliza variáveis de ambiente com valores padrão (`${VAR:default}`). Isso permite que o projeto rode nativamente no VS Code (apontando para localhost) ou dentro do Docker (apontando para o serviço db) sem alteração manual de código.
+
 
 ## 🐳 Infraestrutura (Docker)
 
@@ -86,6 +89,7 @@ O projeto utiliza **Docker Compose** para orquestrar o banco de dados e a ferram
 
 |     Serviço    |        Imagem      | Porta Local | Descrição |
 
+| **mercado-api** | `Custom (Dockerfile)` | `8080` | Container da aplicação Spring Boot.. |
 | **mercado-db** | `postgres:15-alpine` | `5432` | Banco de dados PostgreSQL (versão leve). |
 | **mercado-pgadmin** | `dpage/pgadmin4` | `5050` | Interface web para gerenciar tabelas e dados. |
 
@@ -103,10 +107,27 @@ O projeto utiliza **Docker Compose** para orquestrar o banco de dados e a ferram
 
 ### 🚀 Comandos Rápidos
 
-|              Comando   |    Ação                                      |
+|              Comando              |    Ação                                      |
 
-| `docker-compose up -d` | **Liga** todos os serviços em segundo plano. |
-| `docker-compose ps` | **Lista** os containers e verifica se estão rodando. |
-| `docker-compose down` | **Desliga** e remove os containers/processos. |
+| `docker-compose up -d`            | **Liga** todos os serviços em segundo plano. |
+| `docker-compose ps`               | **Lista** os containers e verifica se estão rodando. |
+| `docker-compose down`             | **Desliga** e remove os containers/processos. |
+| `docker-compose logs -f backend`  | **Mostra a saída do console (o log do Spring) do seu backend. |
+| `docker-compose restart backend`  | **Reinicia apenas o container do Java sem mexer no banco de dados.. |
+| `docker system prune`             | **Remove imag e contai.. parados. Útil quando o computador s/espaço. |
 
 > **Nota:** O serviço `pgadmin` possui uma dependência (`depends_on`) do serviço `db`, garantindo que o banco de dados esteja pronto antes da interface subir.
+
+## 🌳 Estratégia de Branches (Git Flow)
+
+No desenvolvimento do **Mercado App**, utilizo branches para separar as tarefas:
+
+- **main**: Código estável e pronto para rodar.
+- **feat/**: Novas funcionalidades (Ex: `feat/backend-produtos`).
+- **fix/**: Correção de bugs.
+- **docs/**: Melhorias na documentação.
+
+### ✅ Checklist antes de dar Merge na Main:
+1. O código compila sem erros?
+2. O endpoint de cadastro retorna `201 Created`?
+3. O `.gitignore` está ignorando a pasta `target`?
