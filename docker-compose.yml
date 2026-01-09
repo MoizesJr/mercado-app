@@ -1,0 +1,24 @@
+services:
+# SERVIÇO DE BANCO DE DADOS POSTGRESQL
+  db:
+    image: postgres:15-alpine # BD PostgreSQL versão 15 (LEVE E RAPIDA)
+    container_name: mercado-db # Nome do container do banco de dados
+    restart: always # Se o PC reiniciar, o banco sobe sozinho
+    environment:
+      POSTGRES_USER: user_mercado # Usuário do banco de dados
+      POSTGRES_PASSWORD: password_mercado # Senha do banco de dados
+      POSTGRES_DB: mercado_db # Nome do banco de dados
+    ports:
+      - "5432:5432" # Mapeia a porta padrão do PostgreSQL (dentro do DOCKER e Localhost)
+   
+    # INTERFACE WEB PARA VER O BANCO (PGADMIN)
+  pgadmin:
+    image: dpage/pgadmin4 # interface das tabelas 
+    container_name: mercado-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com  # E-mail de login do pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: admin # Senha de login do pgAdmin
+    ports:
+      - "5050:80" # Acesse em: http://localhost:5050
+    depends_on:
+      - db # Garante que o banco de dados inicie antes do pgAdmin
